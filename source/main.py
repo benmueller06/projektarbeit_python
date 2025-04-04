@@ -108,6 +108,7 @@ def neighbours(r, col):
     global mine_values
     global numbers
     global vis
+
  
     # If the cell already not visited
     if [r,col] not in vis:
@@ -191,18 +192,16 @@ def show_mines():
 if __name__ == "__main__":
  
     # Size of grid
-    n = 8
+    n = 5
     # Number of mines
-    mines_no = 8
+    mines_no = 5
  
     # The actual values of the grid
     numbers = [[0 for y in range(n)] for x in range(n)] 
     # The apparent values of the grid
     mine_values = [[' ' for y in range(n)] for x in range(n)]
     # The positions that have been flagged
-    flags = []
- 
-    # Set the mines
+    flags = []    # Set the mines
     set_mines()
  
     # Set the values
