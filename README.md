@@ -1,2 +1,1 @@
-# projektarbeit_python
-start vom projekt
+# python_project
