@@ -12,5 +12,4 @@ def board_out():
 
 def main():
     board_out()
-print("Hallo")
 main()
