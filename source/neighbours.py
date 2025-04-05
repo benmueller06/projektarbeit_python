@@ -1,3 +1,6 @@
+"""
+Module to check for empty cells of the game.
+"""
 n: int = 5
 vis: list[list[int]] = []
 numbers: list[list[int]] = [[0 for i in range(n)] for j in range(n)]
@@ -9,9 +12,6 @@ def neighbours(r: int, col: int) -> None:
     Function to process neighboring cells recursively.
     Updates the trap_values grid and marks cells as visited.
     """
-    global trap_values
-    global vis
-
     # If the cell is not already visited
     if [r, col] not in vis:
         # Mark the cell as visited

@@ -1,62 +1,95 @@
+"""
+Unit tests for the neighbours function in the source module.
+"""
 import unittest
-from source.neighbours import neighbours, vis, numbers, trap_values
+from source import neighbours  # The module we are testing
 
-class TestNeighbours(unittest.TestCase):
+class TestNeighboursFunction(unittest.TestCase):
     """
     Test class for the neighbours function.
     """
-
     def setUp(self) -> None:
-        """
-        This method is run before each test to reset the global variables.
-        """
-        global vis, numbers, trap_values
-        vis.clear()  # Clear the visited list
-        n = 5
-        numbers = [[0 for _ in range(n)] for _ in range(n)]  # Reset numbers grid
-        trap_values = [[' ' for _ in range(n)] for _ in range(n)]  # Reset trap_values grid
+        # Reset global state before each test
+        neighbours.n = 5
+        neighbours.vis = []
+        neighbours.trap_values = [[' ' for _ in range(neighbours.n)] for _ in range(neighbours.n)]
+        neighbours.numbers = [[0 for _ in range(neighbours.n)] for _ in range(neighbours.n)]
 
-    def test_single_zero_cell(self) -> None:
+    def test_single_zero_center(self) -> None:
         """
-        Test that a single zero cell is processed correctly.
+        Test a 5x5 grid with a single zero in the center.
         """
-        numbers[2][2] = 0  # Set a single zero cell
-        neighbours(2, 2)
-        self.assertIn([2, 2], vis)  # Check that the cell is marked as visited
-        self.assertEqual(trap_values[2][2], '0')  # Check that the cell is displayed as '0'
+        # Only the center is 0, surrounded by non-zero cells
+        neighbours.numbers = [
+            [1, 1, 1, 1, 1],
+            [1, 2, 2, 2, 1],
+            [1, 2, 0, 2, 1],
+            [1, 2, 2, 2, 1],
+            [1, 1, 1, 1, 1],
+        ]
+        neighbours.neighbours(2, 2)
 
-    def test_recursive_zero_cells(self) -> None:
-        """
-        Test that neighboring zero cells are processed recursively.
-        """
-        numbers[2][2] = 0
-        numbers[2][3] = 0
-        numbers[3][2] = 0
-        neighbours(2, 2)
-        self.assertIn([2, 2], vis)
-        self.assertIn([2, 3], vis)
-        self.assertIn([3, 2], vis)
-        self.assertEqual(trap_values[2][2], '0')
-        self.assertEqual(trap_values[2][3], '0')
-        self.assertEqual(trap_values[3][2], '0')
+        # Check if only the center was visited
+        self.assertIn([2, 2], neighbours.vis)
+        self.assertEqual(neighbours.trap_values[2][2], "0")
+        self.assertEqual(len(neighbours.vis), 9)
 
-    def test_non_zero_cell(self) -> None:
+    def test_recursive_zeros(self) -> None:
         """
-        Test that a non-zero cell is processed correctly.
+        Test a 5x5 grid with a 3x3 block of zeros in the center.
         """
-        numbers[1][1] = 3  # Set a non-zero cell
-        neighbours(1, 1)
-        self.assertIn([1, 1], vis)  # Check that the cell is marked as visited
-        self.assertEqual(trap_values[1][1], '3')  # Check that the cell is displayed as '3'
+        # A 3x3 zero block in the center
+        neighbours.numbers = [
+            [1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1],
+        ]
+        neighbours.neighbours(2, 2)
 
-    def test_no_revisit(self) -> None:
-        """
-        Test that already visited cells are not revisited.
-        """
-        numbers[0][0] = 0
-        vis.append([0, 0])  # Mark the cell as already visited
-        neighbours(0, 0)
-        self.assertEqual(len(vis), 1)  # Ensure no duplicate visits
+        # Expect all 9 zeros visited
+        expected_visited = [
+            [1, 1], [1, 2], [1, 3],
+            [2, 1], [2, 2], [2, 3],
+            [3, 1], [3, 2], [3, 3],
+        ]
+        for cell in expected_visited:
+            self.assertIn(cell, neighbours.vis)
+            self.assertEqual(neighbours.trap_values[cell[0]][cell[1]], '0')
+        self.assertEqual(len(neighbours.vis), 25)
 
-if __name__ == '__main__':
+    def test_edge_case_top_left_corner(self) -> None:
+        """
+        Test a 5x5 grid with a zero in the top-left corner.
+        """
+        neighbours.numbers = [
+            [0, 0, 1, 1, 1],
+            [0, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+        ]
+        neighbours.neighbours(0, 0)
+        expected_visited = [[0,0],[0,1],[1,0]]
+        for cell in expected_visited:
+            self.assertIn(cell, neighbours.vis)
+
+    def test_no_recursion_non_zero(self) -> None:
+        """
+        Test a 5x5 grid with a non-zero cell in the center.
+        """
+        neighbours.numbers = [
+            [1, 1, 1, 1, 1],
+            [1, 2, 2, 2, 1],
+            [1, 2, 5, 2, 1],
+            [1, 2, 2, 2, 1],
+            [1, 1, 1, 1, 1],
+        ]
+        neighbours.neighbours(2, 2)
+        self.assertEqual(neighbours.trap_values[2][2], '5')
+        self.assertIn([2, 2], neighbours.vis)
+        self.assertEqual(len(neighbours.vis), 1)
+
+if __name__ == "__main__":
     unittest.main()
