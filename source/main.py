@@ -2,14 +2,14 @@
 import random
 import os
  
-# Printing the Minesweeper Layout
-def print_mines_layout():
+# Printing the Spacestation Layout
+def print_traps_layout() -> None: 
  
-    global mine_values
+    global trap_values
     global n
  
     print()
-    print("\t\t\tMINESWEEPER\n")
+    print("\t\t\SPACESTATION\n")
  
     st = "   "
     for i in range(n):
@@ -30,7 +30,7 @@ def print_mines_layout():
          
         st = "  " + str(r + 1) + "  "
         for col in range(n):
-            st = st + "|  " + str(mine_values[r][col]) + "  "
+            st = st + "|  " + str(trap_values[r][col]) + "  "
         print(st + "|") 
  
         st = "     "
@@ -40,16 +40,16 @@ def print_mines_layout():
  
     print()
   
-# Function for setting up Mines
-def set_mines():
+# Function for setting up Traps
+def set_traps() -> None:
  
     global numbers
-    global mines_no
+    global traps_no
     global n
  
-    # Track of number of mines already set up
+    # Track of number of traps already set up
     count = 0
-    while count < mines_no:
+    while count < traps_no:
  
         # Random number from all possible grid positions 
         val = random.randint(0, n*n-1)
@@ -58,13 +58,13 @@ def set_mines():
         r = val // n
         col = val % n
  
-        # Place the mine, if it doesn't already have one
+        # Place the trap, if it doesn't already have one
         if numbers[r][col] != -1:
             count = count + 1
             numbers[r][col] = -1
  
 # Function for setting up the other grid values
-def set_values():
+def set_values() -> None:
  
     global numbers
     global n
@@ -73,7 +73,7 @@ def set_values():
     for r in range(n):
         for col in range(n):
  
-            # Skip, if it contains a mine
+            # Skip, if it contains a trap
             if numbers[r][col] == -1:
                 continue
  
@@ -103,9 +103,9 @@ def set_values():
                 numbers[r][col] = numbers[r][col] + 1
  
 # Recursive function to display all zero-valued neighbours  
-def neighbours(r, col):
+def neighbours(r: Any, col: Any) -> None:
      
-    global mine_values
+    global trap_values
     global numbers
     global vis
 
@@ -120,7 +120,7 @@ def neighbours(r, col):
         if numbers[r][col] == 0:
  
             # Display it to the user
-            mine_values[r][col] = numbers[r][col]
+            trap_values[r][col] = numbers[r][col]
  
             # Recursive calls for the neighbouring cells
             if r > 0:
@@ -142,23 +142,25 @@ def neighbours(r, col):
  
         # If the cell is not zero-valued            
         if numbers[r][col] != 0:
-                mine_values[r][col] = numbers[r][col]
- 
+                trap_values[r][col] = numbers[r][col]
+
+def __setitem__(self, Supportsindex, str:, /) -> None:
+
 # Function for clearing the terminal
-def clear():
-    os.system("clear")      
+def clear() -> None:
+    os.system("clear")  
  
 # Function to display the instructions
-def instructions():
+def instructions() -> None:
     print("Instructions:")
     print("1. Enter row and column number to select a cell, Example \"2 3\"")
-    print("2. In order to flag a mine, enter F after row and column numbers, Example \"2 3 F\"")
+    print("2. In order to flag a trap, enter F after row and column numbers, Example \"2 3 F\"")
  
 # Function to check for completion of the game
-def check_over():
-    global mine_values
+def check_over() -> bool:
+    global trap_values
     global n
-    global mines_no
+    global traps_no
  
     # Count of all numbered values
     count = 0
@@ -168,41 +170,41 @@ def check_over():
         for col in range(n):
  
             # If cell not empty or flagged
-            if mine_values[r][col] != ' ' and mine_values[r][col] != 'F':
+            if trap_values[r][col] != ' ' and trap_values[r][col] != 'F':
                 count = count + 1
      
     # Count comparison          
-    if count == n * n - mines_no:
+    if count == n * n - traps_no:
         return True
     else:
         return False
  
-# Display all the mine locations                    
-def show_mines():
-    global mine_values
+# Display all the trap locations                    
+def show_traps() -> None:
+    global trap_values
     global numbers
     global n
  
     for r in range(n):
         for col in range(n):
             if numbers[r][col] == -1:
-                mine_values[r][col] = 'M'
+                trap_values[r][col] = 'M'
  
  
 if __name__ == "__main__":
  
     # Size of grid
     n = 5
-    # Number of mines
-    mines_no = 5
+    # Number of traps
+    traps_no = 5
  
     # The actual values of the grid
     numbers = [[0 for y in range(n)] for x in range(n)] 
     # The apparent values of the grid
-    mine_values = [[' ' for y in range(n)] for x in range(n)]
+    trap_values = [[' ' for y in range(n)] for x in range(n)]
     # The positions that have been flagged
-    flags = []    # Set the mines
-    set_mines()
+    flags = []    # Set the traps
+    set_traps()
  
     # Set the values
     set_values()
@@ -215,7 +217,7 @@ if __name__ == "__main__":
          
     # The GAME LOOP 
     while not over:
-        print_mines_layout()
+        print_traps_layout()
  
         # Input from the user
         inp = input("Enter row number followed by space and column number = ").split()
@@ -267,13 +269,13 @@ if __name__ == "__main__":
                 continue
  
             # If cell already been displayed
-            if mine_values[r][col] != ' ':
+            if trap_values[r][col] != ' ':
                 clear()
                 print("Value already known")
                 continue
  
             # Check the number for flags    
-            if len(flags) < mines_no:
+            if len(flags) < traps_no:
                 clear()
                 print("Flag set")
  
@@ -281,7 +283,7 @@ if __name__ == "__main__":
                 flags.append([r, col])
                  
                 # Set the flag for display
-                mine_values[r][col] = 'F'
+                trap_values[r][col] = 'F'
                 continue
             else:
                 clear()
@@ -310,29 +312,29 @@ if __name__ == "__main__":
         if [r, col] in flags:
             flags.remove([r, col])
  
-        # If landing on a mine --- GAME OVER    
+        # If landing on a trap --- GAME OVER    
         if numbers[r][col] == -1:
-            mine_values[r][col] = 'M'
-            show_mines()
-            print_mines_layout()
-            print("Landed on a mine. GAME OVER!!!!!")
+            trap_values[r][col] = 'M'
+            show_traps()
+            print_traps_layout()
+            print("Landed on a trap. GAME OVER!!!!!")
             over = True
             continue
  
-        # If landing on a cell with 0 mines in neighboring cells
+        # If landing on a cell with 0 traps in neighboring cells
         elif numbers[r][col] == 0:
-            vis = []
-            mine_values[r][col] = '0'
+            vis: list[int] = []
+            trap_values[r][col] = '0'
             neighbours(r, col)
  
-        # If selecting a cell with atleast 1 mine in neighboring cells  
+        # If selecting a cell with atleast 1 trap in neighboring cells  
         else:   
-            mine_values[r][col] = numbers[r][col]
- 
+            trap_values[r][col] = numbers[r][col]
+        
         # Check for game completion 
         if(check_over()):
-            show_mines()
-            print_mines_layout()
+            show_traps()
+            print_traps_layout()
             print("Congratulations!!! YOU WIN")
             over = True
             continue

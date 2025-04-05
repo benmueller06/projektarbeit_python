@@ -1,14 +1,11 @@
 import random
 import os
-
-def print_mines_layout():
+def print_traps_layout() -> None:
  
-    global mine_values
-    global n
-    n = 5
-    mine_values = [[0 for i in range(n)] for j in range(n)]
+    n: int = 5
+    trap_values: list[list[int]] = [[0 for i in range(n)] for j in range(n)]
     print()
-    print("\t\t\tMINESWEEPER\n")
+    print("\t\t\tSPACESTATION\n")
  
     st = "   "
     for i in range(n):
@@ -29,7 +26,7 @@ def print_mines_layout():
          
         st = "  " + str(r + 1) + "  "
         for col in range(n):
-            st = st + "|  " + str(mine_values[r][col]) + "  "
+            st = st + "|  " + str(trap_values[r][col]) + "  "
         print(st + "|") 
  
         st = "     "
