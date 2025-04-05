@@ -103,7 +103,7 @@ def set_values() -> None:
                 numbers[r][col] = numbers[r][col] + 1
  
 # Recursive function to display all zero-valued neighbours  
-def neighbours(r: Any, col: Any) -> None:
+def neighbours(r: int, col: int) -> None:
      
     global trap_values
     global numbers
@@ -144,7 +144,7 @@ def neighbours(r: Any, col: Any) -> None:
         if numbers[r][col] != 0:
                 trap_values[r][col] = numbers[r][col]
 
-def __setitem__(self, Supportsindex, str:, /) -> None:
+def __setitem__(self, Supportsindex, str:) -> None:
 
 # Function for clearing the terminal
 def clear() -> None:

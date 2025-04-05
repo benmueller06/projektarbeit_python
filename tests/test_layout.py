@@ -1,12 +1,20 @@
+"""
+Testfile to test the layout module."""
 import unittest
 from io import StringIO
 import sys
 
 # Import the function to test
-import tests.layout as layout
+from source import layout
 
 class TestPrintTrapsLayout(unittest.TestCase):
+    """
+    Test class for the print_traps_layout function.
+    """
     def test_print_traps_layout_output(self) -> None:
+        """
+        Test the output of the print_traps_layout function.
+        """
         # Redirect stdout to capture print statements
         captured_output = StringIO()
         sys.stdout = captured_output
@@ -24,6 +32,9 @@ class TestPrintTrapsLayout(unittest.TestCase):
         self.assertIn("|  0  |  0  |  0  |  0  |  0  |", output)
 
     def test_globals_set(self) -> None:
+        """
+        Test that the global variables are set correctly.
+        """
         layout.print_traps_layout()
 
         # Check global 'n' is 5
