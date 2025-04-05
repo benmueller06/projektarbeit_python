@@ -9,7 +9,7 @@ def print_traps_layout() -> None:
     global n
  
     print()
-    print("\t\t\SPACESTATION\n")
+    print("\t\tSPACESTATION\n")
  
     st = "   "
     for i in range(n):
@@ -114,13 +114,13 @@ def neighbours(r: int, col: int) -> None:
     if [r,col] not in vis:
  
         # Mark the cell visited
-        vis.append([r,col])
+        vis.append([r, col])
  
         # If the cell is zero-valued
         if numbers[r][col] == 0:
  
             # Display it to the user
-            trap_values[r][col] = numbers[r][col]
+            trap_values[r][col] = str(numbers[r][col])
  
             # Recursive calls for the neighbouring cells
             if r > 0:
@@ -142,9 +142,7 @@ def neighbours(r: int, col: int) -> None:
  
         # If the cell is not zero-valued            
         if numbers[r][col] != 0:
-                trap_values[r][col] = numbers[r][col]
-
-def __setitem__(self, Supportsindex, str:) -> None:
+                trap_values[r][col] = str(numbers[r][col])
 
 # Function for clearing the terminal
 def clear() -> None:
@@ -203,7 +201,7 @@ if __name__ == "__main__":
     # The apparent values of the grid
     trap_values = [[' ' for y in range(n)] for x in range(n)]
     # The positions that have been flagged
-    flags = []    # Set the traps
+    flags: list[list[int]] = []    # Set the traps
     set_traps()
  
     # Set the values
@@ -323,13 +321,13 @@ if __name__ == "__main__":
  
         # If landing on a cell with 0 traps in neighboring cells
         elif numbers[r][col] == 0:
-            vis: list[int] = []
+            vis: list[list[int]] = []
             trap_values[r][col] = '0'
             neighbours(r, col)
  
         # If selecting a cell with atleast 1 trap in neighboring cells  
         else:   
-            trap_values[r][col] = numbers[r][col]
+            trap_values[r][col] = str(numbers[r][col])
         
         # Check for game completion 
         if(check_over()):

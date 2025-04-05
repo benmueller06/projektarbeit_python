@@ -1,5 +1,6 @@
 """
-Testfile to test the layout module."""
+Testfile to test the layout module.
+"""
 import unittest
 from io import StringIO
 import sys
