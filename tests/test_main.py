@@ -4,7 +4,6 @@ from io import StringIO
 from source import main  # The module we are testing
 
 class TestMainFunctions(unittest.TestCase):
-
     def setUp(self) -> None:
         main.n = 5
         main.traps_no = 5
