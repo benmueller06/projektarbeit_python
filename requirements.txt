@@ -8,4 +8,3 @@ mypy-extensions==1.0.0
 platformdirs==4.3.7
 pylint==3.3.6
 tomlkit==0.13.2
-typing_extensions==4.13.1
