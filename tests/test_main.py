@@ -1,6 +1,7 @@
 import unittest
 import sys
 from io import StringIO
+from unittest.mock import patch
 from source import main  # The module we are testing
 
 class TestMainFunctions(unittest.TestCase):
@@ -102,6 +103,36 @@ class TestMainFunctions(unittest.TestCase):
         self.assertIn("SPACESTATION", output)
         self.assertIn("1     2     3     4     5", output)
         self.assertIn("|     |     |     |     |     |", output)
+
+    def test_game_loop(self) -> None:
+        """
+        Test the game_loop function with simulated user input.
+
+        This test simulates a sequence of valid moves that leads to winning the game.
+        It uses mock to patch input and suppress screen clearing.
+        """
+        # Set up a 2x2 board with no traps for controlled test
+        main.n = 2
+        main.traps_no = 0
+        main.numbers = [[0, 0], [0, 0]]
+        main.trap_values = [[' ' for _ in range(main.n)] for _ in range(main.n)]
+        main.flags = []
+        main.vis = []
+
+        # Patch input to simulate user revealing all cells
+        # Sequence of inputs: "1 1", "1 2", "2 1", "2 2"
+        inputs = ["1 1", "1 2", "2 1", "2 2"]
+        
+        with patch("builtins.input", side_effect=inputs), \
+             patch("os.system"), \
+             patch("builtins.print"):
+            # Expect the game to complete without error
+            main.game_loop()
+
+        # After game loop, trap_values should be revealed
+        for row in main.trap_values:
+            for cell in row:
+                self.assertNotEqual(cell, ' ')
 
     def test_globals_set(self) -> None:
         """
