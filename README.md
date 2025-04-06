@@ -1,11 +1,12 @@
-# python_project
-Need to set PYTHONPATH export PYTHONPATH=/home/ben/projektarbeit_python
+# Ben's Python Project!
 
-test commands:  python3 -m unittest ...
-                coverage run ... + coverage html
-                mypy ...
-                pylint ...
+Hello, this is my Spacestation game.
 
 
+# Installation
 
-                
+The best way of trying my game is, by building a new virtual environment with my "requirements.txt". There are all librarys you need to play my game.
+
+## Play the Game
+
+To play my game, just open a new Terminal tab from the "projektarbeit_python" folder and type in `python3 source/main.py`
